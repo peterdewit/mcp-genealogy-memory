@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+
+  mcp-genealogy-memory-db:
+    image: postgres:16-alpine
+    container_name: mcp-genealogy-memory-db
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - /mnt/user/appdata/network-ai/mcp-memory-genealogy/postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  mcp-genealogy-memory:
+    build: .
+    container_name: mcp-genealogy-memory
+    env_file: .env
+    depends_on:
+      mcp-genealogy-memory-db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      MEMORY_PORT: ${MEMORY_PORT}
+    volumes:
+      - ./server:/app/server
+    ports:
+      - "6555:${MEMORY_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:${MEMORY_PORT}/mcp >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
