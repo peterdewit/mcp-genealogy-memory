@@ -328,7 +328,4 @@ MIT
 
 ---
 
-# Contributing
-
-Pull requests welcome. Open issues for bugs or feature requests.
 
