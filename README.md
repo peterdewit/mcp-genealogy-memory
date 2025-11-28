@@ -17,7 +17,6 @@ This README covers:
 * Let's Encrypt TLS (Traefik)
 * Troubleshooting
 * License
-* Contributing
 
 ---
 
