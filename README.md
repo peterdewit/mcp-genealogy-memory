@@ -9,8 +9,7 @@ This README covers:
 * Requirements
 * Directory structure
 * Installation
-* Development usage
-* Production deployment
+* Deployment
 * Resetting the database
 * Backup and restore
 * Tools reference (summary)
