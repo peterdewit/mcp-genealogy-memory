@@ -103,33 +103,12 @@ docker build -t genealogy-memory-mcp .
 
 ---
 
-# Development Usage
-
-Start the stack:
-
-```bash
-docker compose up -d
-```
-
-This uses:
-
-* `docker-compose.yml` (development)
-* `docker-compose.override.yml` (hot-reload + debug, if present)
-
-The MCP server will be available at:
-
-```text
-http://localhost:6555/mcp
-```
-
----
-
-# Production Deployment
+# Deployment
 
 Use:
 
 ```bash
-docker compose -f docker-compose.production.yml --env-file .env up -d
+docker compose -f docker-compose.yml --env-file .env up -d
 ```
 
 Production includes:
@@ -137,7 +116,6 @@ Production includes:
 * Restart policies (`restart: always`)
 * Healthchecks for both services
 * Named volume for stable database storage
-* No development mounts
 
 ## Environment Variables
 
@@ -155,7 +133,7 @@ DB_PASSWORD=your_secure_password
 
 # Resetting the Database
 
-Use the universal reset tool:
+Use the reset tool:
 
 ```bash
 ./reset_genealogy_memory.sh
